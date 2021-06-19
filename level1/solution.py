@@ -36,7 +36,8 @@ def solution1(s):
     # if odd length, then only viable pattern is a single repeated character
     if len(s) % 2 == 1:
         if s[0] * len(s) == s:
-            return s[0], len(s)
+            # return s[0], len(s)
+            return len(s)
 
     # generate suffixes from len(s)//2
     sids = []
@@ -54,7 +55,8 @@ def solution1(s):
             break 
     if not match: 
         sufId, repeat = 0, 1
-    return s[sufId:], repeat
+    # return s[sufId:], repeat
+    return repeat
     
 def main():
     # given test cases 
