@@ -6,10 +6,10 @@ Google Foobar
 """
 import random 
 
-def solution(l, s):
-    print()
-    print(f"list: {l}")
-    print(f"target: {s}")
+def solution(l, t):
+    # print()
+    # print(f"list: {l}")
+    # print(f"target: {s}")
     # your code here 
     i, j = 0, 1
     total = l[i]
@@ -17,14 +17,14 @@ def solution(l, s):
 
     # if list only has single element 
     if len(l) == 1: 
-        if total == s:
+        if total == t:
             found = True
 
     while j < len(l) and i < len(l):
-        if total == s:
+        if total == t:
             found = True 
             break
-        elif total < s:
+        elif total < t:
             total += l[j]
             j += 1
         else: 
