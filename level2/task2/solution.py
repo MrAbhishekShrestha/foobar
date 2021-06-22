@@ -36,14 +36,14 @@ def counting_sort_column(lst, index):
             max_item = elem[index]
     
     # initialize count array 
-    count_array = [None] * (max_item + 1)
+    count_array = [None] * (max_item + 2)
     for i in range(len(count_array)):
         count_array[i] = []
     
     # update count array 
     for item in lst:
         if len(item) >= index+1:
-            count_array[item[index]].append(item)
+            count_array[item[index]+1].append(item)
         else:
             count_array[0].append(item)
     
@@ -58,15 +58,22 @@ def counting_sort_column(lst, index):
 
 
 def main():
+    # given test cases 
     lst = ["1.1.2", "1.0", "1.3.3", "1.0.12", "1.0.2"]
     print(solution(lst))
-    
-    lst = [[1, 1, 2], [1, 0], [1, 3, 3], [1, 0, 12], [1, 0, 2]]
+
+    lst = ["1.11", "2.0.0", "1.2", "2", "0.1", "1.2.1", "1.1.1", "2.0"]
+    print(solution(lst))
+
+    lst = ["1.1.2", "1.0", "1.3.3", "1.0.12", "1.0.2"]
+    print(solution(lst))
+
+    # lst = [[1, 11], [2, 0, 0], [1, 2], [2], [0, 1], [1, 2, 1], [1, 1, 1], [2, 0]]
+    # print(lst)
     # for k in range(2, -1, -1):
     #     print(counting_sort_column(lst, k))
-    # print(counting_sort_column(lst, 1))
-
-
+        
+    
 
 if __name__ == "__main__":
     main()
