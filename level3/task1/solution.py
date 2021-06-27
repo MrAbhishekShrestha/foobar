@@ -70,14 +70,43 @@ def solution(map):
         print(row)
     return 
                 
+def dijkstra(map):
+    """
+    Start at exit (height-1, width-1)
+    Stop at entry (0, 0)
+    memo[i][j] = (distance:int, discovered:boolean, visited:boolean)
+    """
+    height = len(map) # height  
+    width = len(map[0]) # width
+    memo = [None] * height
+    for i in range(height):
+        memo[i] = [(None, False, False)] * width
     
+    # base case
+    memo[height-1][width-1]= (1, False, False)      # exit 
+    for i in range(height-1, -1, -1):
+        for j in range(width-1, -1, -1):
+            if map[i][j] == 1:          # wall 
+                memo[i][j]= (inf, False, False)
+    for row in memo:
+        print(row)
+    return 
 
 def main():
     map = [[0, 1, 1, 0], [0, 0, 0, 1], [1, 1, 0, 0], [1, 1, 1, 0]]
     # print(solution(map))
 
-    map = [[0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0], [0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 1, 1], [0, 1, 1, 1, 1, 1], [0, 0, 0, 0, 0, 0]]
-    print(solution(map))
+    map = [
+        [0, 0, 0, 0, 0, 0], 
+        [1, 1, 1, 1, 1, 0], 
+        [0, 0, 0, 0, 0, 0], 
+        [0, 1, 1, 1, 1, 1], 
+        [0, 1, 1, 1, 1, 1], 
+        [0, 0, 0, 0, 0, 0]
+    ]
+    # print(solution(map))
+
+    dijkstra(map)
 
 if __name__ == "__main__":
     main()
