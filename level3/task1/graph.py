@@ -137,7 +137,7 @@ def main():
     # ]
 
     graph = Graph(map)
-    print(graph)
+    # print(graph)
 
     height = len(map)
     width = len(map[0])
