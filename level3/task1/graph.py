@@ -1,5 +1,5 @@
 from math import inf 
-
+from collections import deque
 class Graph: 
     def __init__(self, matrix) -> None:
         self.matrix = matrix 
@@ -25,8 +25,8 @@ class Graph:
         limit = self.height * self.width
         for id in range(limit):
             down = right = None 
-            if id + self.height < limit:
-                down = id + self.height 
+            if id + self.width < limit:
+                down = id + self.width 
             if id % self.width < self.width - 1:
                 right = id + 1
             
@@ -47,7 +47,38 @@ class Graph:
         for vertex in self.vertices:
             output += f"Vertex {str(vertex)}\n"
         return output 
+    
+    def bfs_with_bomb(self, source, sink, bombs):
+        source = self.vertices[source]
+        sink = self.vertices[sink]
 
+        discovered = deque()
+        discovered.append(source)
+        source.discovered = True
+        source.distance = 1 
+        source.potential_wall_breaks = bombs 
+        while discovered:
+            u = discovered.popleft()
+            u.visited = True 
+
+            if u == sink:
+                print(u)
+                return u.distance
+
+            for edge in u.edges:
+                v = self.vertices[edge.v]
+                if not v.discovered:
+                    v.discovered = True 
+                    v.distance = u.distance + 1
+                    if v.is_wall:
+                        v.potential_wall_breaks = u.potential_wall_breaks - 1
+                        if v.potential_wall_breaks < 0:
+                            continue 
+                    else: 
+                        v.potential_wall_breaks = u.potential_wall_breaks
+                    discovered.append(v)
+        return inf
+                    
 class Vertex: 
     def __init__(self, id, x, y, is_wall) -> None:
         self.id = id 
@@ -60,12 +91,10 @@ class Vertex:
         self.visited = False 
         self.distance = inf 
         self.potential_wall_breaks = None 
+        self.previous = None 
     
     def add_edge(self, edge):
         self.edges.append(edge)
-        
-    def __eq__(self, other) -> bool:
-        return (self.x == other.x and self.y == other.y) or self.id == other.id
 
     def __str__(self) -> str:
         output=f"{str(self.id)}: [{str(self.y)}][{str(self.x)}] {'!' if self.is_wall else ''}\n  Edges: "
@@ -83,14 +112,40 @@ class Edge:
         return f"({self.u},{self.v})"
 
 def main():
+    # map = [
+    #     [0, 1, 1, 0], 
+    #     [0, 0, 0, 1], 
+    #     [1, 1, 0, 0], 
+    #     [1, 1, 1, 0]
+    # ]
+
     map = [
-        [0, 1, 1, 0], 
-        [0, 0, 0, 1], 
-        [1, 1, 0, 0], 
-        [1, 1, 1, 0]
+        [0,0,0],
+        [1,0,1],
+        [0,0,1],
+        [0,1,0],
+        [0,0,0]
     ]
+
+    # map = [
+    #     [0, 0, 0, 0, 0, 0], 
+    #     [1, 1, 1, 1, 1, 0], 
+    #     [0, 0, 0, 0, 0, 0], 
+    #     [0, 1, 1, 1, 1, 1], 
+    #     [0, 1, 1, 1, 1, 1], 
+    #     [0, 0, 0, 0, 0, 0]
+    # ]
+
     graph = Graph(map)
     print(graph)
+
+    height = len(map)
+    width = len(map[0])
+    source = 0 
+    sink = (height * width) - 1
+    print(sink)
+    bombs = 1
+    print(graph.bfs_with_bomb(source, sink, bombs))
 
 if __name__ == "__main__":
     main()
