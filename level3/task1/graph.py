@@ -68,7 +68,10 @@ class Vertex:
         return (self.x == other.x and self.y == other.y) or self.id == other.id
 
     def __str__(self) -> str:
-        return f"{str(self.id)}: [{str(self.y)}][{str(self.x)}] {'!' if self.is_wall else ''}"
+        output=f"{str(self.id)}: [{str(self.y)}][{str(self.x)}] {'!' if self.is_wall else ''}\n  Edges: "
+        for edge in self.edges:
+            output += f"{str(edge)}, "
+        return output 
 
 class Edge: 
     def __init__(self, u, v, w = 1) -> None:
@@ -77,7 +80,7 @@ class Edge:
         self.w = w 
     
     def __str__(self) -> str:
-        return f"({self.u},{self.v},{self.w})"
+        return f"({self.u},{self.v})"
 
 def main():
     map = [
