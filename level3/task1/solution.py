@@ -93,7 +93,12 @@ def dijkstra(map):
     return 
 
 def main():
-    map = [[0, 1, 1, 0], [0, 0, 0, 1], [1, 1, 0, 0], [1, 1, 1, 0]]
+    map = [
+        [0, 1, 1, 0], 
+        [0, 0, 0, 1], 
+        [1, 1, 0, 0], 
+        [1, 1, 1, 0]
+    ]
     # print(solution(map))
 
     map = [
