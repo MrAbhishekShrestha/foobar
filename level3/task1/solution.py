@@ -7,7 +7,8 @@ date: 26th June 2021
 """
 
 from math import inf 
-from collections import deque                
+from collections import deque      
+from copy import deepcopy          
 class Graph: 
     """
     Representing the Maze as a Graph 
@@ -157,7 +158,7 @@ class Edge:
     Edges connect the Vertices in the Graph 
     """
     DEFAULT_WEIGHT = 1
-    def __init__(self, u, v, w = DEFAULT_WEIGHT) -> None:
+    def __init__(self, u, v, w = DEFAULT_WEIGHT):
         """
         Constructor
         Since this is an unweighted graph, each edge has weight of 1 
@@ -167,7 +168,7 @@ class Edge:
         self.v = v
         self.w = w 
     
-    def __str__(self) -> str:
+    def __str__(self):
         """
         String representation of an Edge 
         """
@@ -190,6 +191,13 @@ def solution(map):
     bombs = 1
     return graph.bfs_with_bomb(source, sink, bombs)
 
+def display(map):
+    """
+    Function to print 2d matrix with formatting
+    """
+    for row in map:
+        print(row)
+
 def main():
     map = [
         [0, 1, 1, 0], 
@@ -197,8 +205,7 @@ def main():
         [1, 1, 0, 0], 
         [1, 1, 1, 0]
     ]
-    # print(solution1(map))
-    print(solution(map))
+    # print(solution(map))
 
     map = [
         [0, 0, 0, 0, 0, 0], 
@@ -208,7 +215,7 @@ def main():
         [0, 1, 1, 1, 1, 1], 
         [0, 0, 0, 0, 0, 0]
     ]
-    print(solution(map))
+    # print(solution(map))
 
     map = [
         [0,0,0],
@@ -216,6 +223,65 @@ def main():
         [0,0,1],
         [0,1,0],
         [0,0,0]
+    ]
+    # print(solution(map))
+
+    map = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    ]
+    # print(solution(map))
+
+    """
+    https://blog.usejournal.com/extracting-secret-test-cases-from-google-foobar-challenge-6b0a0bea61c4
+    """
+    map = [
+        [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0],
+        [0,1,0,1,0,1,1,1,1,1,1,1,0,1,1,0,1,0,1,0],
+        [0,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0],
+        [0,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,0],
+        [0,1,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0],
+        [0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,1,0,1,0],
+        [0,1,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0],
+        [0,1,0,1,0,1,0,0,1,1,1,1,1,1,0,0,1,0,1,0],
+        [0,1,0,1,0,1,1,0,1,0,0,0,0,0,0,1,1,0,1,0],
+        [0,1,0,1,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1,0],
+        [0,1,0,1,0,1,1,1,1,0,1,0,0,1,0,0,1,0,1,0],
+        [0,1,0,1,0,0,0,1,0,0,1,1,1,1,1,0,1,0,1,0],
+        [0,1,0,1,1,0,1,1,1,0,1,1,0,1,1,1,1,0,1,0],
+        [0,1,0,1,0,0,0,1,0,0,1,0,0,0,1,0,1,0,1,0],
+        [0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0]
+    ]
+    # print(solution(map))
+
+    # failing test case 
+    map = [
+        [0,1,0,1,0,0],
+        [0,1,0,1,1,0],
+        [0,1,0,1,1,0],
+        [0,1,0,1,1,0],
+        [0,0,0,1,1,0],
+    ]
+    # print(solution(map))
+
+    # simpler failing test case 
+    map = [ 
+        [0,1,0,1,0,0],
+        [0,0,0,1,1,0]
     ]
     print(solution(map))
 
