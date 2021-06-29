@@ -13,7 +13,7 @@ class Graph:
     """
     Representing the Maze as a Graph 
     """
-    def __init__(self, matrix) -> None:
+    def __init__(self, matrix):
         """
         Initialize a Graph where each vertex represents a box in the matrix 
         Each vertex is given a unique id 
@@ -65,7 +65,7 @@ class Graph:
                 right_vertex = self.vertices[right]
                 right_vertex.add_edge(Edge(right, id))
     
-    def __str__(self) -> str:
+    def __str__(self):
         """
         String representation of the graph. 
         """
@@ -85,6 +85,13 @@ class Graph:
         initially, source.potential_wall_breaks = bombs. This information is propagated to neighboring
         vertices. If neighboring vertex is a wall, potential_wall_breaks decrements by 1. 
         As long as potential_wall_break is not negative, current wall can be blasted & traversed.
+
+        Modification to BFS:
+        During edge relaxation, if the endpoint (vertex) of an edge has already been discovered 
+        but has a smaller potential_wall_breaks than current, then it is appended to the end of the queue
+        again (after updating new distance and potential_wall_breaks properties).
+
+        This modification allows us to find shortest path correctly, everytime. 
         """
         source = self.vertices[source]
         sink = self.vertices[sink]
@@ -113,13 +120,24 @@ class Graph:
                     else: 
                         v.potential_wall_breaks = u.potential_wall_breaks
                     discovered.append(v)
+                else: 
+                    if v.is_wall: 
+                        if u.potential_wall_breaks - 1 > v.potential_wall_breaks:
+                            v.distance = u.distance + 1 
+                            v.potential_wall_breaks = u.potential_wall_breaks - 1 
+                            discovered.append(v)
+                    else: 
+                        if u.potential_wall_breaks > v.potential_wall_breaks:
+                            v.distance = u.distance + 1 
+                            v.potential_wall_breaks = u.potential_wall_breaks
+                            discovered.append(v)
         return inf 
                     
 class Vertex: 
     """
     A Graph contains many vertices 
     """
-    def __init__(self, id, x, y, is_wall) -> None:
+    def __init__(self, id, x, y, is_wall):
         """
         Initializes a Vertex object
         Keeps track of its OUTGOING edges only 
@@ -143,7 +161,7 @@ class Vertex:
         """
         self.edges.append(edge)
 
-    def __str__(self) -> str:
+    def __str__(self):
         """
         String representation of Vertex Object 
         ! at the end if vertex is a wall 
@@ -190,13 +208,6 @@ def solution(map):
     sink = (height * width) - 1
     bombs = 1
     return graph.bfs_with_bomb(source, sink, bombs)
-
-def display(map):
-    """
-    Function to print 2d matrix with formatting
-    """
-    for row in map:
-        print(row)
 
 def main():
     map = [
@@ -246,9 +257,6 @@ def main():
     ]
     # print(solution(map))
 
-    """
-    https://blog.usejournal.com/extracting-secret-test-cases-from-google-foobar-challenge-6b0a0bea61c4
-    """
     map = [
         [0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0],
         [0,1,0,1,0,1,1,1,1,1,1,1,0,1,1,0,1,0,1,0],
@@ -266,7 +274,7 @@ def main():
         [0,1,0,1,0,0,0,1,0,0,1,0,0,0,1,0,1,0,1,0],
         [0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0]
     ]
-    # print(solution(map))
+    print(solution(map))
 
     # failing test case 
     map = [
@@ -283,7 +291,7 @@ def main():
         [0,1,0,1,0,0],
         [0,0,0,1,1,0]
     ]
-    print(solution(map))
+    # print(solution(map))
 
 if __name__ == "__main__":
     main()
