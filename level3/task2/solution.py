@@ -4,7 +4,13 @@ Level 3 task 2
 Bomb Baby
 """
 def solution(x, y):
-    # your code here 
+    """
+    find number of turns it takes (generations) to find the gcd of x and y 
+    as if x or y is a factor of the other, then the solution is impossible
+    integer divide larger with smaller number to find number of generations 
+    instead of repeatedly subtracting (optimized solution)
+    need this optimization as integers x and y can be as large as 10^50
+    """
     m, f = int(x), int(y)
     generation = 0 
 
